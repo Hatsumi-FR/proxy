@@ -56,6 +56,11 @@ func copyHeader(dst, src http.Header) {
 		}
 	}
 }
+
+func handlePing(w http.ResponseWriter, req *http.Request) {
+	w.WriteHeader(http.StatusOK)
+}
+
 func main() {
 	var port int
 	flag.IntVar(&port, "port", 8888, "port")
@@ -64,6 +69,10 @@ func main() {
 	server := &http.Server{
 		Addr: fmt.Sprintf("0.0.0.0:%d", port),
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.Method == http.MethodGet && r.URL.Path == "/ping" {
+				handlePing(w, r)
+				return
+			}
 			if r.Method == http.MethodConnect {
 				handleTunneling(w, r)
 			} else {
