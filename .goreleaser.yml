@@ -1,0 +1,9 @@
+builds:
+  - main: proxy.go
+    binary: proxy
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
